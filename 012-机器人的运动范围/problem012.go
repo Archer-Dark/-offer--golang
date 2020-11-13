@@ -9,6 +9,7 @@ func get(x int) int {
 	return res
 }
 
+//解法1：广度优先
 func movingCount(m,n,k int) int {
 	if k == 0 {
 		return 1
@@ -32,10 +33,29 @@ func movingCount(m,n,k int) int {
 			}
 			if vis[i][j] {
 				ans += 1
-			}else {
-				ans += 0
 			}
 		}
 	}
 	return ans
+}
+
+//解法2：深度优先
+func movingCount2(m,n,k int) int {
+	if k == 0 {
+		return 1
+	}
+	vis := make([][]bool,m)
+	for i := range vis{
+		vis[i] = make([]bool,n)
+	}
+	return dfs(0,0,m,n,k,vis)
+}
+
+func dfs(i,j,m,n,k int,vis [][]bool) int {
+	if i < 0 || i >= m || j < 0 || j >= n || get(i)+get(j) > k || vis[i][j]{
+		return 0
+	}
+	vis[i][j] = true
+	return 1 + dfs(i+1,j,m,n,k,vis) + dfs(i-1,j,m,n,k,vis) +
+		dfs(i,j+1,m,n,k,vis) + dfs(i,j-1,m,n,k,vis)
 }
