@@ -1,34 +1,39 @@
 package main
 
-import "strconv"
+import (
+	"strconv"
+	"unsafe"
+)
 
 func mySum(x,y string) string {
 	if len(x) < len(y) {
 		x,y = y,x
 	}
 	difference := len(x) - len(y)
-	yhead := ""
-	for i:= 0;i<difference;i++{
-		yhead = yhead+"0"
-	}
-	y = yhead+y
 	carry := 0
-	newNum := ""
+	numBytes := make([]uint8,len(x)+1)
 	for i := len(x)-1;i>=0;i-- {
 		a,_ := strconv.Atoi(x[i:i+1])
-		b,_ := strconv.Atoi(y[i:i+1])
+		b := 0
+		if i >= difference{
+			b,_ = strconv.Atoi(y[i-difference:i+1-difference])
+		}
 		c := a + b + carry
 		if c >= 10 {
-			newNum = strconv.Itoa(c - 10) + newNum
+			c = c - 10
 			carry = 1
-		}else if i > 0{
+		}else {
 			carry = 0
 		}
+		num := strconv.Itoa(c)[0]
+		numBytes[i+1] = num
 	}
-	if carry > 0 {
-		newNum = "1"+newNum
+	numBytes[0] = uint8('1')
+	if carry == 0 {
+		numBytes = numBytes[1:]
+		return *(*string)(unsafe.Pointer(&numBytes))
 	}
-	return newNum
+	return *(*string)(unsafe.Pointer(&numBytes))
 }
 
 func main()  {
