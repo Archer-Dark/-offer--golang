@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
 这道题目的输入是一个链表，输出是一个数组。
 链表具有的特点：
@@ -37,4 +39,58 @@ func ReversePrint(head *ListNode) []int {
 		newHead = newHead.Next
 	}
 	return res
+}
+
+//var res2 []int
+func ReversePrint2(head *ListNode) []int {
+	if head == nil{
+		return nil
+	}
+	var res2 []int
+	count := 0
+	for {
+		defer func(i,v int) {
+			res2[i] = v
+		}(count,head.Val)
+		count++
+		if head.Next == nil {
+			res2 = make([]int,count)
+			break
+		}
+		head = head.Next
+	}
+	return res2
+}
+
+
+func ReversePrint3(head *ListNode) (res []int) {
+	if head == nil{
+		return nil
+	}
+	//res = make([]int,0,3)
+	for head != nil{
+		defer func(v int) {
+			res = append(res,v)
+			//fmt.Println(res)
+		}(head.Val)
+		head = head.Next
+	}
+	return res
+}
+
+func main()  {
+	var head *ListNode
+	for i := 0; i < 10; i++ {
+		temp := &ListNode{i,head}
+		head = temp
+	}
+
+	//for head != nil {
+	//	fmt.Println(head)
+	//	head = head.Next
+	//}
+
+	//fmt.Println(ReversePrint3(head))
+	fmt.Println(ReversePrint2(head))
+	//fmt.Println(ReversePrint(head))
 }
