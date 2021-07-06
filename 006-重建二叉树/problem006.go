@@ -68,4 +68,8 @@ func main() {
 	fmt.Printf("inOder from Tree reconstructed:  ")
 	printInOrder(root)
 	fmt.Printf("\n")
+
+	fmt.Printf("posOder from Tree reconstructed:  ")
+	printPosOrder(root)
+	fmt.Printf("\n")
 }
