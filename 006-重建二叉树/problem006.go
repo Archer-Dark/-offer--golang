@@ -21,6 +21,7 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 	return nil
 }
 
+//前序遍历:根左右
 func printPreOrder(root *TreeNode){
 	if root != nil {
 		fmt.Printf("%d ", root.Val)
@@ -29,11 +30,21 @@ func printPreOrder(root *TreeNode){
 	}
 }
 
+//中序遍历：左根右
 func printInOrder(root *TreeNode){
 	if root != nil {
 		printInOrder(root.Left)
 		fmt.Printf("%d ", root.Val)
 		printInOrder(root.Right)
+	}
+}
+
+//后续遍历：左右根
+func printPosOrder(root *TreeNode){
+	if root != nil {
+		printPosOrder(root.Left)
+		printPosOrder(root.Right)
+		fmt.Printf("%d ", root.Val)
 	}
 }
 
