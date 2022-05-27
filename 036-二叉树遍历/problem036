@@ -1,0 +1,101 @@
+package main
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+//前序遍历
+func preorderTraversal(root *TreeNode) (vals []int) {
+    var p1, p2 *TreeNode = root, nil
+    for p1 != nil {
+        p2 = p1.Left
+        if p2 != nil {
+            for p2.Right != nil && p2.Right != p1 {
+                p2 = p2.Right
+            }
+            if p2.Right == nil {
+                vals = append(vals, p1.Val)
+                p2.Right = p1
+                p1 = p1.Left
+                continue
+            }
+            p2.Right = nil
+        } else {
+            vals = append(vals, p1.Val)
+        }
+        p1 = p1.Right
+    }
+    return
+}
+
+func preorderTraversal2(root *TreeNode) (vals []int) {
+    var preorder func(*TreeNode)
+    preorder = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+        vals = append(vals, node.Val)
+        preorder(node.Left)
+        preorder(node.Right)
+    }
+    preorder(root)
+    return
+}
+
+
+//中序遍历
+func inorderTraversal(root *TreeNode) (res []int) {
+	var inorder func(node *TreeNode)
+	inorder = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+		inorder(node.Left)
+		res = append(res, node.Val)
+		inorder(node.Right)
+	}
+	inorder(root)
+	return
+}
+
+//后续遍历
+func postorderTraversal(root *TreeNode) (res []int) {
+    var postorder func(*TreeNode)
+    postorder = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+        postorder(node.Left)
+        postorder(node.Right)
+        res = append(res, node.Val)
+    }
+    postorder(root)
+    return
+}
+
+//层序遍历
+func levelOrder(root *TreeNode) [][]int {
+    ret := [][]int{}
+    if root == nil {
+        return ret
+    }
+    q := []*TreeNode{root}
+    for i := 0; len(q) > 0; i++ {
+        ret = append(ret, []int{})
+        p := []*TreeNode{}
+        for j := 0; j < len(q); j++ {
+            node := q[j]
+            ret[i] = append(ret[i], node.Val)
+            if node.Left != nil {
+                p = append(p, node.Left)
+            }
+            if node.Right != nil {
+                p = append(p, node.Right)
+            }
+        }
+        q = p
+    }
+    return ret
+}
